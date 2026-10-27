@@ -1,0 +1,228 @@
+* {
+    box-sizing: border-box;
+}
+
+body {
+    margin: 0;
+    font-family: Arial, sans-serif;
+    background: #fff5f8;
+    color: #49303b;
+}
+
+/* Navbar */
+.navbar {
+    background: #d94f87;
+    padding: 18px 7%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.logo {
+    color: white;
+    font-size: 24px;
+    font-weight: bold;
+    text-decoration: none;
+}
+
+.nav-links {
+    display: flex;
+    gap: 25px;
+}
+
+.nav-links a {
+    color: white;
+    text-decoration: none;
+    font-size: 14px;
+}
+
+/* Hero section */
+.hero {
+    margin: 35px 7%;
+    padding: 45px;
+    border-radius: 24px;
+    background: linear-gradient(135deg, #ffe0ed, #fff0f6);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 30px;
+}
+
+.hero-text {
+    max-width: 540px;
+}
+
+.label {
+    color: #c13c76;
+    font-size: 12px;
+    font-weight: bold;
+    letter-spacing: 1px;
+}
+
+h1 {
+    font-size: 42px;
+    line-height: 1.2;
+}
+
+h1 span {
+    color: #d94f87;
+}
+
+.hero-text > p:not(.label) {
+    color: #805d6d;
+    line-height: 1.8;
+}
+
+.btn {
+    display: inline-block;
+    margin-top: 15px;
+    padding: 13px 22px;
+    background: #d94f87;
+    color: white;
+    text-decoration: none;
+    border-radius: 10px;
+}
+
+.btn:hover {
+    background: #b8326b;
+}
+
+/* Ilustrasi */
+.hero-art {
+    min-width: 180px;
+    text-align: center;
+    background: white;
+    padding: 30px;
+    border-radius: 22px;
+    box-shadow: 0 8px 25px #d94f8720;
+}
+
+.heart {
+    color: #d94f87;
+    font-size: 45px;
+}
+
+.book {
+    font-size: 65px;
+}
+
+.hero-art p {
+    color: #c13c76;
+    font-weight: bold;
+}
+
+/* Daftar kursus */
+.courses {
+    padding: 20px 7% 50px;
+}
+
+.section-heading {
+    text-align: center;
+    margin-bottom: 30px;
+}
+
+.section-heading h2 {
+    font-size: 30px;
+    color: #49303b;
+}
+
+.section-heading > p:last-child {
+    color: #805d6d;
+}
+
+.course-list {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 22px;
+}
+
+.course-card {
+    background: white;
+    border: 1px solid #f4c5d8;
+    border-radius: 18px;
+    padding: 25px;
+    box-shadow: 0 5px 18px #d94f8710;
+    transition: transform 0.2s;
+}
+
+.course-card:hover {
+    transform: translateY(-5px);
+}
+
+.course-icon {
+    width: 45px;
+    height: 45px;
+    border-radius: 12px;
+    background: #ffe0ed;
+    color: #d94f87;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 27px;
+}
+
+.course-code {
+    color: #c13c76;
+    font-size: 12px;
+    font-weight: bold;
+    margin-top: 20px;
+}
+
+.course-card h3 {
+    color: #49303b;
+}
+
+.course-card > p:not(.course-code) {
+    color: #805d6d;
+    line-height: 1.7;
+}
+
+.course-link {
+    color: #c13c76;
+    text-decoration: none;
+    font-weight: bold;
+    font-size: 14px;
+}
+
+/* Footer */
+footer {
+    background: #fbd8e6;
+    color: #80506a;
+    text-align: center;
+    padding: 22px;
+    margin-top: 20px;
+}
+
+/* Tampilan HP */
+@media (max-width: 700px) {
+    .navbar {
+        flex-direction: column;
+        gap: 15px;
+    }
+
+    .nav-links {
+        gap: 15px;
+        flex-wrap: wrap;
+        justify-content: center;
+    }
+
+    .hero {
+        margin: 20px 5%;
+        padding: 25px;
+        flex-direction: column;
+        align-items: stretch;
+    }
+
+    h1 {
+        font-size: 32px;
+    }
+
+    .course-list {
+        grid-template-columns: 1fr;
+    }
+
+    .courses {
+        padding-left: 5%;
+        padding-right: 5%;
+    }
+}
