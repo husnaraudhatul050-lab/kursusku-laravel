@@ -1,9 +1,36 @@
-@import 'tailwindcss';
+@import 'bootstrap/dist/css/bootstrap.min.css';
 
-@source '../../vendor/laravel/framework/src/Illuminate/Pagination/resources/views/*.blade.php';
-@source '../../storage/framework/views/*.php';
+body {
+    background: #fff5f8;
+    color: #4a3540;
+}
 
-@theme {
-    --font-sans: 'Instrument Sans', ui-sans-serif, system-ui, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji',
-        'Segoe UI Symbol', 'Noto Color Emoji';
+.navbar-brand {
+    font-weight: 800;
+}
+
+/* Navbar Pink */
+.bg-pink-magenta {
+    background-color: #f8a5c2 !important;
+}
+
+/* Tombol Pink */
+.btn-pink {
+    background-color: #f48fb1 !important;
+    border-color: #f48fb1 !important;
+    color: white !important;
+    font-weight: bold;
+}
+
+.btn-pink:hover {
+    background-color: #ec6f9b !important;
+    border-color: #ec6f9b !important;
+    color: white !important;
+}
+
+/* Badge Pink */
+.badge-pink {
+    background-color: #f48fb1 !important;
+    color: white !important;
+    font-weight: bold;
 }
