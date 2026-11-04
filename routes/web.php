@@ -1,55 +1,32 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
-use Illuminate\Http\Request;
 use App\Http\Controllers\HomeController;
+use App\Http\Controllers\CourseController;
 
-// ==========================================
-// 1. ROUTE BERANDA (dari pertemuan sebelumnya)
-// ==========================================
+// Route Beranda
 Route::get('/', [HomeController::class, 'index'])->name('home');
 
+// Resource route untuk courses (Pertemuan 10)
+Route::resource('courses', CourseController::class);
 
-// ==========================================
-// 2. ROUTE FORM PENDAFTARAN
-// ==========================================
-
-// Tampilkan halaman form
+// Route untuk enrollment/pendaftaran (Pertemuan 9)
 Route::get('/pendaftaran', function () {
-    $courses = [
-        1 => ['name' => 'Web Dasar'],
-        2 => ['name' => 'PHP Dasar'],
-        3 => ['name' => 'Laravel Dasar'],
-    ];
-
-    return view('enrollments.create', compact('courses'));
+    return view('pendaftaran.create'); // Sesuaikan dengan nama view Anda
 })->name('enrollments.create');
 
-// Proses submit form
-Route::post('/pendaftaran/preview', function (Request $request) {
-    $data = $request->validate([
-        'name' => ['required', 'string', 'min:3', 'max:100'],
-        'email' => ['required', 'email'],
-        'course_id' => ['required', 'integer'],
+Route::post('/pendaftaran', function () {
+    // Logika simpan pendaftaran
+    return back()->with('success', 'Pendaftaran berhasil!');
+})->name('enrollments.store');
+
+// Endpoint AJAX availability
+Route::get('/availability/{course}', function (App\Models\Course $course) {
+    return response()->json([
+        'id'     => $course->id,
+        'code'   => $course->code,
+        'name'   => $course->name,
+        'quota'  => $course->quota,
+        'status' => $course->status,
     ]);
-
-    return back()
-        ->with('success', 'Form lolos validasi. Database akan ditambahkan pada pertemuan berikutnya.')
-        ->withInput();
-})->name('enrollments.preview');
-
-
-// ==========================================
-// 3. ROUTE JSON AVAILABILITY (UNTUK AJAX)
-// ==========================================
-Route::get('/courses/{course}/availability', function (int $course) {
-    $availability = [
-        1 => ['course' => 'Web Dasar', 'remaining' => 12],
-        2 => ['course' => 'PHP Dasar', 'remaining' => 8],
-        3 => ['course' => 'Laravel Dasar', 'remaining' => 4],
-    ];
-
-    abort_unless(isset($availability[$course]), 404);
-
-    return response()->json($availability[$course]);
 })->name('courses.availability');

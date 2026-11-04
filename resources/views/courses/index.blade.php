@@ -1,62 +1,60 @@
 @extends('layouts.app')
 
-@section('title', 'Beranda')
+@section('title', 'Daftar Kursus')
 
 @section('content')
-<!-- Hero Section -->
-<div class="card card-pink mb-4">
-    <div class="card-header">
-        🌸 Kursus teknologi untuk mahasiswa
+<div class="container py-4">
+    <div class="d-flex justify-content-between align-items-center mb-3">
+        <div>
+            <h1 class="h3 mb-1">Daftar Kursus</h1>
+            <p class="text-muted mb-0">Data diambil dari MySQL melalui Eloquent.</p>
+        </div>
+        <a href="{{ route('courses.create') }}" class="btn btn-primary">
+            + Tambah Kursus
+        </a>
     </div>
-    <div class="card-body">
-        <h1 class="card-title">Belajar lebih terarah bersama KursusKu</h1>
-        <p class="card-text">Pilih kursus, cek ketersediaan kursi, lalu isi formulir pendaftaran.</p>
-        <a href="{{ route('enrollments.create') }}" class="btn btn-pink">Daftar Kursus</a>
+
+    @if(session('success'))
+        <div class="alert alert-success">
+            {{ session('success') }}
+        </div>
+    @endif
+
+    <div class="card">
+        <div class="card-body p-0">
+            <div class="table-responsive">
+                <table class="table table-striped mb-0">
+                    <thead>
+                        <tr>
+                            <th>Kode</th>
+                            <th>Nama</th>
+                            <th>Biaya</th>
+                            <th>Kuota</th>
+                            <th>Mulai</th>
+                            <th>Status</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @forelse($courses as $course)
+                        <tr>
+                            <td>{{ $course->code }}</td>
+                            <td>{{ $course->name }}</td>
+                            <td>Rp {{ number_format($course->fee, 0, ',', '.') }}</td>
+                            <td>{{ $course->quota }}</td>
+                            <td>{{ $course->start_date->format('d/m/Y') }}</td>
+                            <td>{{ ucfirst($course->status) }}</td>
+                        </tr>
+                        @empty
+                        <tr>
+                            <td colspan="6" class="text-center py-4 text-muted">
+                                Belum ada data kursus.
+                            </td>
+                        </tr>
+                        @endforelse
+                    </tbody>
+                </table>
+            </div>
+        </div>
     </div>
 </div>
-
-<!-- Daftar Kursus -->
-<h2 class="mb-3">Kursus Tersedia</h2>
-
-<table class="table table-bordered table-striped table-pink">
-    <thead>
-        <tr>
-            <th>No</th>
-            <th>Nama Kursus</th>
-            <th>Deskripsi</th>
-            <th>Kuota</th>
-            <th>Terdaftar</th>
-            <th>Sisa</th>
-            <th>Aksi</th>
-        </tr>
-    </thead>
-    <tbody>
-        @forelse($kursus as $index => $item)
-            @php
-                $sisa = $item->kuota - $item->enrollments_count;
-            @endphp
-            <tr>
-                <td>{{ $index + 1 }}</td>
-                <td><strong>{{ $item->nama }}</strong></td>
-                <td>{{ $item->deskripsi }}</td>
-                <td>{{ $item->kuota }}</td>
-                <td>{{ $item->enrollments_count }}</td>
-                <td>
-                    @if($sisa > 0)
-                        <span class="badge bg-success">{{ $sisa }} kursi</span>
-                    @else
-                        <span class="badge bg-danger">Penuh</span>
-                    @endif
-                </td>
-                <td>
-                    <a href="{{ route('enrollments.create') }}" class="btn btn-pink btn-sm">Daftar</a>
-                </td>
-            </tr>
-        @empty
-            <tr>
-                <td colspan="7" class="text-center">Belum ada kursus tersedia.</td>
-            </tr>
-        @endforelse
-    </tbody>
-</table>
 @endsection
