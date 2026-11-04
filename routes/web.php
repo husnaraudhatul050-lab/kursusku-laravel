@@ -12,7 +12,7 @@ Route::resource('courses', CourseController::class);
 
 // Route untuk enrollment/pendaftaran (Pertemuan 9)
 Route::get('/pendaftaran', function () {
-    return view('pendaftaran.create'); // Sesuaikan dengan nama view Anda
+    return view('enrollments.create'); // Sesuaikan dengan nama view Anda
 })->name('enrollments.create');
 
 Route::post('/pendaftaran', function () {
