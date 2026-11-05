@@ -1,0 +1,19 @@
+Log Penggunaan AI - Praktikum Pertemuan 11
+
+Nama: Raudhatul Husna
+NIM: 2524225
+Mata Kuliah: Pemrograman Web III
+Proyek: KursusKu (Laravel)
+Alat AI: ChatGPT (OpenAI)
+
+No.| Prompt / pertanyaan| Saran AI| Dipakai?| Alasan
+1| Meminta panduan langkah-langkah praktikum Pertemuan 11| AI memberikan penjelasan tahapan praktikum secara berurutan| Ya| Membantu memahami langkah pengerjaan praktikum
+2| Cara menjalankan project Laravel di Laragon| AI menjelaskan cara membuka Laragon, menjalankan Apache dan MySQL, serta mengakses project| Ya| Membantu menjalankan project KursusKu
+3| Cara mengecek route pada Laravel| AI memberikan perintah "php artisan route:list"| Ya| Untuk memastikan route yang dibuat sudah terdaftar
+4| Cara membuat fitur CRUD kursus| AI memberikan contoh kode Create, Read, Update, dan Delete| Ya| Membantu membuat fitur pengelolaan data kursus
+5| Cara membuat halaman detail kursus| AI menjelaskan penggunaan method "show()" pada CourseController dan view "show.blade.php"| Ya| Agar pengguna dapat melihat detail kursus
+6| Cara membuat form tambah dan edit kursus| AI memberikan contoh form menggunakan Blade, "@csrf", dan "@method('PUT')"| Ya| Mempermudah proses menambah dan mengubah data kursus
+7| Cara melakukan validasi data kursus| AI menjelaskan penggunaan validasi pada Laravel agar data yang dimasukkan sesuai aturan| Ya| Menghindari data kosong atau tidak sesuai
+8| Cara memperbaiki tampilan halaman Laravel| AI membantu memeriksa file Blade dan CSS| Ya| Agar tampilan halaman KursusKu berjalan sesuai desain
+9| Website "kursusku.test" tidak bisa dibuka| AI menjelaskan kemungkinan masalah pada Laragon, Apache, dan konfigurasi domain lokal| Ya| Untuk mencari penyebab website tidak dapat diakses
+10| Cara mengatasi error DNS_PROBE_FINISHED_NXDOMAIN| AI memberikan langkah pemeriksaan Laragon dan folder project di "C:\laragon\www"| Ya| Membantu menemukan penyebab domain lokal tidak terdeteksi
