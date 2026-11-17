@@ -1,0 +1,20 @@
+# AI USAGE LOG – PERTEMUAN 12
+
+Dokumen ini berisi catatan penggunaan AI selama pelaksanaan Praktikum Pemrograman Web III Pertemuan 12 dengan materi Relasi Database pada proyek KursusKu.
+
+| Prompt / Pertanyaan | Saran AI | Dipakai? | Alasan |
+|---|---|:---:|---|
+| Bagaimana mengatasi error `Cannot declare class EnrollmentController, because the name is already in use` saat membuka halaman `/enrollments/create`? | AI menganalisis *exception trace* dan menemukan bahwa kode controller tidak sengaja disalin ke dalam file `create.blade.php`. AI menyarankan menghapus seluruh isi file view tersebut dan menggantinya dengan kode HTML/Blade form yang benar, lalu menjalankan `php artisan optimize:clear`. | **Ya** | Karena file view tidak boleh mengandung deklarasi `class` atau `namespace` PHP. Jika ada, Laravel akan mengeksekusi deklarasi class dua kali (dari controller asli dan dari view), sehingga menyebabkan error *name already in use*. Setelah dibersihkan, halaman form berhasil dimuat tanpa error 500. |
+| Mengapa dropdown Course pada form enrollment kosong padahal data course sudah ada di database? | AI meminta screenshot struktur tabel di phpMyAdmin dan menemukan bahwa kolom `status` bertipe `ENUM('draft','open','closed')`, sedangkan controller mencari status `'active'`. AI memberikan perintah SQL `ALTER TABLE` untuk menambah nilai `'active'` ke dalam ENUM. | **Ya** | Karena tipe data ENUM di database membatasi nilai yang boleh dimasukkan. Saat mencoba menyimpan nilai `'active'`, MySQL menolak dengan warning *"Data truncated"*. Setelah menjalankan `ALTER TABLE courses MODIFY status ENUM('draft','open','closed','active')`, data course berhasil disimpan dan dropdown terisi. |
+| Bagaimana memperbaiki dropdown Course yang masih kosong meskipun di Tinker sudah ada 8 course dengan status `'active'`? | AI memeriksa kode `EnrollmentController.php` dan menemukan baris `$courses = Course::where('status', 'open')`. AI menyarankan mengubah filter dari `'open'` menjadi `'active'` agar konsisten dengan data di database, lalu menjalankan `php artisan view:clear`. | **Ya** | Karena filter di controller tidak konsisten dengan nilai status yang ada di database. Setelah diubah menjadi `'active'` dan cache dibersihkan, dropdown berhasil menampilkan 8 course. |
+| Mengapa kode Blade seperti `{{ $enrollment->participant->name }}` dan `@forelse` muncul sebagai teks mentah di browser dan tidak dieksekusi? | AI mengidentifikasi dari screenshot VS Code bahwa nama file adalah `index.php`, bukan `index.blade.php`. AI menyarankan melakukan rename file menjadi `index.blade.php` dan menjalankan `php artisan view:clear`, lalu hard refresh browser dengan `Ctrl + F5`. | **Ya** | Karena Laravel hanya memproses template engine Blade jika ekstensi file diakhiri dengan `.blade.php`. File `.php` biasa hanya dibaca sebagai HTML/PHP murni, sehingga semua direktif Blade (`{{ }}`, `@if`, `@forelse`) tidak diproses dan muncul sebagai teks biasa. Setelah direname, tabel laporan relasional tampil dengan data yang benar. |
+
+---
+
+## Catatan Penting
+
+- AI dimanfaatkan untuk membantu mencari solusi ketika terjadi kesalahan pada proses pengerjaan program, terutama saat menghadapi error yang tidak jelas penyebabnya.
+- AI **tidak** digunakan untuk menulis seluruh kode praktikum dari nol. Kode utama (migration, model, controller, view) diketik sendiri berdasarkan panduan, dan AI hanya digunakan untuk *debugging* dan *review*.
+- Setiap saran AI selalu diverifikasi dengan menjalankan perintah atau membuka halaman browser terlebih dahulu sebelum diterapkan ke kode utama.
+- AI membantu mempercepat proses *troubleshooting* dengan menganalisis pesan error, *exception trace*, dan struktur database, sehingga waktu praktikum lebih efisien.
+- Pemahaman konsep relasi database (foreign key, composite unique, cascade delete, eager loading) tetap diperoleh melalui praktik langsung, bukan hanya dari penjelasan AI.

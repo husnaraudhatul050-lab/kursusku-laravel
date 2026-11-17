@@ -13,9 +13,10 @@ class EnrollmentController extends Controller
     public function create()
     {
         $participants = Participant::orderBy('name')->get();
+        // ✅ PERBAIKAN: samakan dengan status yang ada di DB ('active')
         $courses = Course::where('status', 'active')->orderBy('name')->get();
 
-        return view('enrollments.create', compact('participants', 'courses')); // <-- WAJIB 'enrollments.create'
+        return view('enrollments.create', compact('participants', 'courses'));
     }
 
     public function store(Request $request)
