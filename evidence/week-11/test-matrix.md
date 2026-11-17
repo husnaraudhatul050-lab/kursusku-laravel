@@ -22,5 +22,3 @@ No.| Skenario Pengujian| Data Uji| Hasil yang Diharapkan| Actual| Status| Bukti
 13| Update dengan kode sendiri| Kode tidak diubah| Update berhasil| | Belum diuji| 
 14| Update memakai kode kursus lain| Kode duplikat| Validasi menolak data| | Belum diuji| 
 15| Hapus kursus percobaan| TEST-DEL-01| Kursus terhapus| | Belum diuji| 
-
-Catatan: Status dan hasil aktual diisi sesuai pengujian yang benar-benar dilakukan. Minimal 12 kasus pengujian harus tercatat. Jangan menandai Pass sebelum pengujian berhasil dilakukan.
