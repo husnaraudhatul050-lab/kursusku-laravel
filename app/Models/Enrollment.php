@@ -2,20 +2,32 @@
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class Enrollment extends Model
 {
+    use HasFactory;
+
     protected $fillable = [
-        'participant_id', 'course_id', 'status',
+        'course_id',
+        'user_id',
+        'status',
     ];
 
-    public function participant(): BelongsTo {
-        return $this->belongsTo(Participant::class);
+    /**
+     * Relasi ke Course
+     */
+    public function course()
+    {
+        return $this->belongsTo(Course::class);
     }
 
-    public function course(): BelongsTo {
-        return $this->belongsTo(Course::class);
+    /**
+     * Relasi ke User (Mahasiswa)
+     */
+    public function user()
+    {
+        return $this->belongsTo(User::class);
     }
 }

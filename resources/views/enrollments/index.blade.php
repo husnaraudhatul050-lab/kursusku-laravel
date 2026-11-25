@@ -1,83 +1,109 @@
-<!DOCTYPE html>
-<html lang="id">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Laporan Enrollment - KursusKu</title>
-    <style>
-        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Segoe UI', Arial, sans-serif; }
-        body { background: #fff5f8; color: #333; min-height: 100vh; }
-        .navbar { background: #c2185b; color: white; padding: 15px 40px; display: flex; justify-content: space-between; align-items: center; box-shadow: 0 2px 5px rgba(0,0,0,0.1); }
-        .navbar h2 { font-size: 22px; font-weight: 600; }
-        .navbar a { color: white; text-decoration: none; margin-left: 25px; font-size: 15px; }
-        .navbar a:hover { text-decoration: underline; }
-        .container { max-width: 1000px; margin: 40px auto; padding: 0 20px; }
-        .page-title { color: #880e4f; margin-bottom: 25px; font-size: 26px; border-bottom: 2px solid #f8bbd0; padding-bottom: 10px; }
-        .alert-success { background: #fce4ec; color: #880e4f; padding: 15px 20px; border-left: 5px solid #d81b60; border-radius: 4px; margin-bottom: 25px; font-weight: 500; }
-        .btn-add { display: inline-block; background: #ec407a; color: white; padding: 12px 25px; text-decoration: none; border-radius: 6px; font-weight: bold; margin-bottom: 25px; box-shadow: 0 2px 4px rgba(0,0,0,0.1); }
-        .btn-add:hover { background: #d81b60; }
-        .card { background: white; border-radius: 10px; padding: 30px; box-shadow: 0 4px 15px rgba(0,0,0,0.05); }
-        table { width: 100%; border-collapse: collapse; margin-top: 10px; }
-        thead { background: #d81b60; color: white; }
-        th { padding: 16px 20px; text-align: left; font-weight: 600; font-size: 14px; text-transform: uppercase; letter-spacing: 0.5px; }
-        td { padding: 16px 20px; border-bottom: 1px solid #fce4ec; color: #444; font-size: 15px; }
-        tbody tr:nth-child(even) { background: #fffafc; }
-        tbody tr:hover { background: #fce4ec; transition: background 0.2s; }
-        .badge { background: #f8bbd0; color: #880e4f; padding: 6px 14px; border-radius: 20px; font-size: 12px; font-weight: bold; display: inline-block; }
-        .empty { text-align: center; padding: 40px; color: #ad1457; font-style: italic; font-size: 16px; }
-    </style>
-</head>
-<body>
+@extends('layouts.app')
 
-    <div class="navbar">
-        <h2>🌸 KursusKu</h2>
+@section('title', 'Daftar Enrollment')
+
+@section('content')
+<div class="container mt-4">
+
+    {{-- Header --}}
+    <div class="d-flex justify-content-between align-items-center mb-3">
         <div>
-            <a href="{{ url('/') }}">Beranda</a>
-            <a href="{{ route('courses.index') }}">Daftar Course</a>
-            <a href="{{ route('enrollments.index') }}">Enrollment</a>
+            <h1>Daftar Enrollment</h1>
+            <small class="text-muted">Data diambil dari MySQL melalui Eloquent.</small>
         </div>
+        <a href="{{ route('enrollments.create') }}" class="btn btn-primary">
+            + Tambah Enrollment
+        </a>
     </div>
 
-    <div class="container">
+    {{-- Flash message --}}
+    @if(session('success'))
+        <div class="alert alert-success">{{ session('success') }}</div>
+    @endif
 
-        <h1 class="page-title">📋 Laporan Enrollment</h1>
+    {{-- Form Search & Filter --}}
+    <form method="GET" action="{{ route('enrollments.index') }}" class="row g-2 mb-3">
+        <div class="col-md-5">
+            <input type="search" id="live-search" name="q" value="{{ $search }}"
+                   class="form-control" placeholder="Cari nama mahasiswa atau course">
+        </div>
+        <div class="col-md-3">
+            <select id="status-filter" name="status" class="form-select">
+                <option value="">Semua status</option>
+                <option value="Aktif"      @selected($status === 'Aktif')>Aktif</option>
+                <option value="Selesai"    @selected($status === 'Selesai')>Selesai</option>
+                <option value="Dibatalkan" @selected($status === 'Dibatalkan')>Dibatalkan</option>
+            </select>
+        </div>
+        <div class="col-md-4 d-flex gap-2">
+            <button type="submit" class="btn btn-primary">Cari</button>
+            <a href="{{ route('enrollments.index') }}" class="btn btn-outline-secondary">Reset</a>
+        </div>
+    </form>
 
-        @if(session('success'))
-            <div class="alert-success">✅ {{ session('success') }}</div>
-        @endif
-
-        <a href="{{ route('enrollments.create') }}" class="btn-add">+ Tambah Enrollment</a>
-
-        <div class="card">
-            <table>
-                <thead>
+    {{-- Tabel --}}
+    <div class="table-responsive">
+        <table class="table table-striped table-bordered align-middle">
+            <thead class="table-light">
+                <tr>
+                    <th>ID</th>
+                    <th>Course</th>
+                    <th>Mahasiswa</th>
+                    <th>Tanggal Daftar</th>
+                    <th>Status</th>
+                    <th>Aksi</th>
+                </tr>
+            </thead>
+            <tbody>
+                @forelse ($enrollments as $enrollment)
                     <tr>
-                        <th style="width: 5%;">No</th>
-                        <th style="width: 30%;">Participant</th>
-                        <th style="width: 30%;">Course</th>
-                        <th style="width: 20%;">Start Date</th>
-                        <th style="width: 15%;">Status</th>
+                        <td>{{ $enrollment->id }}</td>
+                        <td>{{ $enrollment->course->name ?? '-' }}</td>
+                        <td>{{ $enrollment->user->name ?? '-' }}</td>
+                        <td>{{ $enrollment->created_at ? $enrollment->created_at->format('d/m/Y') : '-' }}</td>
+                        <td>
+                            <span class="badge
+                                @if($enrollment->status === 'Aktif') bg-success
+                                @elseif($enrollment->status === 'Selesai') bg-info
+                                @elseif($enrollment->status === 'Dibatalkan') bg-danger
+                                @else bg-secondary
+                                @endif">
+                                {{ $enrollment->status }}
+                            </span>
+                        </td>
+                        <td>
+                            <a href="{{ route('enrollments.show', $enrollment) }}"
+                               class="btn btn-sm btn-outline-info">Detail</a>
+                            <a href="{{ route('enrollments.edit', $enrollment) }}"
+                               class="btn btn-sm btn-outline-warning">Edit</a>
+                            <form action="{{ route('enrollments.destroy', $enrollment) }}"
+                                  method="POST" class="d-inline"
+                                  onsubmit="return confirm('Yakin ingin menghapus enrollment ini?')">
+                                @csrf
+                                @method('DELETE')
+                                <button type="submit" class="btn btn-sm btn-outline-danger">Hapus</button>
+                            </form>
+                        </td>
                     </tr>
-                </thead>
-                <tbody>
-                    @forelse ($enrollments as $index => $enrollment)
-                        <tr>
-                            <td>{{ $index + 1 }}</td>
-                            <td>{{ $enrollment->participant->name }}</td>
-                            <td>{{ $enrollment->course->name }}</td>
-                            <td>{{ \Carbon\Carbon::parse($enrollment->course->start_date)->format('d M Y') }}</td>
-                            <td><span class="badge">{{ ucfirst($enrollment->status) }}</span></td>
-                        </tr>
-                    @empty
-                        <tr>
-                            <td colspan="5" class="empty">Belum ada enrollment. Silakan tambah data baru.</td>
-                        </tr>
-                    @endforelse
-                </tbody>
-            </table>
-        </div>
-
+                @empty
+                    <tr>
+                        <td colspan="6" class="text-center text-muted py-4">
+                            Tidak ada enrollment yang sesuai dengan pencarian atau filter.
+                        </td>
+                    </tr>
+                @endforelse
+            </tbody>
+        </table>
     </div>
 
-</body>
-</html>
+    {{-- Info + Pagination --}}
+    <div class="d-flex justify-content-between align-items-center mt-3">
+        <small class="text-muted">
+            Menampilkan {{ $enrollments->firstItem() ?? 0 }}–{{ $enrollments->lastItem() ?? 0 }}
+            dari {{ $enrollments->total() }} enrollment
+        </small>
+        {{ $enrollments->links() }}
+    </div>
+
+</div>
+@endsection
